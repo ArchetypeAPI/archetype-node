@@ -1,4 +1,4 @@
-# Archetype Node.js SDK
+# Archetype Node.js Library
 
 Archetype
 
