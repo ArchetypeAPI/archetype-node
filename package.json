@@ -1,0 +1,33 @@
+{
+  "name": "@archetypeapi/node",
+  "version": "1.0.0",
+  "description": "Archetype API Node",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ArchetypeAPI/archetype-node.git"
+  },
+  "bugs": "https://github.com/ArchetypeAPI/archetype-node/issues",
+  "engines": {
+    "node": ">=12.*"
+  },
+  "main": ".dist/archetypeapi.mjs",
+  "module": ".dist/archetypeapi.mjs",
+  "types": "types/archetypeapi.d.ts",
+  "files": [
+    "dist/**"
+  ],
+  "scripts": {
+    "build": "tsup lib/archetypeapi.js",
+    "start": "npm run build -- --watch",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rm -rf node_modules && rm -rf dist"
+  },
+  "devDependencies": {
+    "tsup": "^6.5.0",
+    "typescript": "^4.9.5"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
