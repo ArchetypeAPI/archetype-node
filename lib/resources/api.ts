@@ -1,12 +1,11 @@
 
-const api_requestor = require('../ApiRequestor');
+const ApiRequestor = require('../ApiRequestor');
 
-const ApiRequestor = new api_requestor.ApiRequestor();
 class ApiResource {
   private _requestor: any;
   private readonly _objectName: string;
-  constructor(objectName: string) {
-    this._requestor = ApiRequestor;
+  constructor(objectName: string, appId?: string, secretKey?: string) {
+    this._requestor = new ApiRequestor(appId, secretKey);
     this._objectName = objectName;
   }
 

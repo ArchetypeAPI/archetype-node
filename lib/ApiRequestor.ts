@@ -1,26 +1,30 @@
 const constants =  require("./constants");
-const { HttpClient } = require("./HttpClient");
+const HttpClient = require("./HttpClient");
 
 class ApiRequestor {
-  constructor() {
-    this.appId = constants.appId;
-    this.secretKey = constants.secretKey;
+  private readonly appId: string;
+  private readonly secretKey: string;
+  private _httpClient: any;
+  private readonly _baseUrl: string;
+  constructor(appId?: string, secretKey?: string) {
+    this.appId = appId || constants.appId;
+    this.secretKey = secretKey || constants.secretKey;
     this._httpClient = new HttpClient();
     this._baseUrl = constants.apiBaseUrl;
   }
 
-  request(method, path, params, headers) {
+  request(method: string, path: string, params?: object, headers?: object) {
     const url = this._buildUrl(path);
     const requestHeaders = this._buildHeaders(headers);
     const requestParams = this._buildParams(params);
     return this._httpClient.makeRequest(method, url, requestParams, requestHeaders);
   }
 
-  _buildUrl(path) {
+  _buildUrl(path: string) {
     return `${this._baseUrl}${path}`;
   }
 
-  _buildHeaders(headers) {
+  _buildHeaders(headers: object) {
     const requestHeaders = {
       'Authorization': `Bearer ${this.secretKey}`,
       'X-Archetype-AppID': this.appId,
@@ -29,11 +33,10 @@ class ApiRequestor {
     return Object.assign(requestHeaders, headers);
   }
 
-  _buildParams(params) {
+  _buildParams(params: object) {
     return params;
   }
 }
 
-module.exports = {
-  ApiRequestor,
-}
+module.exports = ApiRequestor
+

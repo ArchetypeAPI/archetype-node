@@ -1,10 +1,14 @@
 
 const constants = require('./constants');
-const { HttpClient } = require('./HttpClient');
+const HttpClient = require('./HttpClient');
 
 class AuthRequestor {
+  private readonly appId: string;
+  private readonly secretKey: string;
+  private _httpClient: any;
+  private _baseUrl: string;
   constructor() {
-this.appId = constants.appId;
+    this.appId = constants.appId;
     this.secretKey = constants.secretKey;
     this._httpClient = new HttpClient();
     this._baseUrl = constants.apiBaseUrl;
@@ -48,6 +52,4 @@ this.appId = constants.appId;
   }
 }
 
-module.exports = {
-  AuthRequestor,
-}
+module.exports = AuthRequestor;

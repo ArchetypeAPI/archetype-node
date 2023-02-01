@@ -1,8 +1,8 @@
 const { ApiResource } = require('./api');
 
 class Token extends ApiResource {
-  constructor() {
-    super('token');
+  constructor(appId?: string, secretKey?: string) {
+    super('token', appId, secretKey);
   }
 
   async create(params: any, version?: number) {
@@ -10,6 +10,4 @@ class Token extends ApiResource {
   }
 }
 
-module.exports = {
-  Token,
-}
+module.exports = Token;

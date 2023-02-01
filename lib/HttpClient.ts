@@ -2,13 +2,14 @@
 const axios = require('axios');
 
 class HttpClient {
+    private _client: any;
     constructor() {
         this._client = axios.create({});
     }
     getClientName() {
         return 'axios';
     }
-    makeRequest(method, url, data, headers, protocol, timeout) {
+    makeRequest(method: string, url: string, data?: object, headers?: object, timeout?: number) {
         const options = {
             method,
             url,
@@ -19,3 +20,5 @@ class HttpClient {
         return this._client.request(options);
     }
 }
+
+module.exports = HttpClient;

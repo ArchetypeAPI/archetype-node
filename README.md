@@ -74,7 +74,22 @@ const customer = Archetype.Customer.retrieve("CUSTOM_UID");
 // log that customer's email
 console.log(customer["email"]);
 
+// Track a Metered Usage
 
+Archetype.BillableMetric.LogUsage(
+  custom_ud="YOUR_CUSTOMER_ID",
+  billable_metric_id="BILLABLE_METRIC_ID",
+  amount=100 // Float
+)
+
+// Authorize an Express Request with Archetype Middelware
+const express = require('express')
+const { Auth } = require('@archetypeapi/node')
+const app = express()
+
+app.get('/a', Auth, (req, res) => {
+  res.send('Success!')
+})
 ```
 
 You can leverage the SDK to create and configure billable metrics, products, token management, authorization and more. Check out [the docs](https://docs.archetype.dev/docs/welcome) for more examples and use cases.
