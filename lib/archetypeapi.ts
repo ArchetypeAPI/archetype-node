@@ -3,6 +3,7 @@ const Product = require("./resources/product");
 const Token = require("./resources/token");
 const BillableMetric = require("./resources/billableMetric");
 const Auth = require("./resources/auth");
+const Endpoint = require("./resources/endpoint");
 
 
 class Archetype {
@@ -10,11 +11,13 @@ class Archetype {
   public Product: typeof Product;
   public Token: typeof Token;
   public BillableMetric: typeof BillableMetric;
+  public Endpoint: typeof Endpoint;
   constructor(appId: string, secretKey: string) {
     this.Customer = new Customer(appId, secretKey)
     this.Product = new Product(appId, secretKey)
     this.Token = new Token(appId, secretKey)
     this.BillableMetric = new BillableMetric(appId, secretKey)
+    this.Endpoint = new Endpoint(appId, secretKey)
   }
 }
 
