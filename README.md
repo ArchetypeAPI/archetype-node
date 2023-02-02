@@ -87,7 +87,12 @@ const express = require('express')
 const { Auth } = require('@archetypeapi/node')
 const app = express()
 
-app.get('/a', Auth, (req, res) => {
+const appId = process.env.APP_ID; // find in your Archetype Dashboard
+const secretKey = process.env.SECRET_KEY; // find in your Archetype Dashboard
+
+const ArchetypeAuth = Auth(appId, appSecret);
+
+app.get('/a', ArchetypeAuth, (req, res) => {
   res.send('Success!')
 })
 ```

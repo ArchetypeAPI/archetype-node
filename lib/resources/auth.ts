@@ -1,28 +1,25 @@
-const authRequestor = require('../AuthRequestor');
-const AuthRequestor = new authRequestor();
-function AuthMiddleware(next) {
-  return async (req, res) => {
-    const startTime = Date.now();
-    const headers = req.headers;
-    const body = req.body;
-    const params = req.params;
+const AuthRequestor = require('../AuthRequestor');
 
-    const headerApiKey = headers['apikey'];
-    const bodyApiKey = body['apikey'];
-    const urlApiKey = params['apikey'];
+const AuthMiddleware = (appId: string, secretKey: string) => async (req: any, res: any, next: any) => {
+  const authRequestor = new AuthRequestor(appId, secretKey);
+  const headers = req.headers;
+  const body = req.body;
+  const params = req.params;
 
-    const path = req.path;
-    const method = req.method;
+  const headerApiKey = body['header_apikey'];
+  const bodyApiKey = body['body_apikey'];
+  const urlApiKey = params['url_apikey'];
 
-    const authResponse = await AuthRequestor.request(method, path, urlApiKey, bodyApiKey, headerApiKey, headers, body);
+  const path = req.path;
+  const method = req.method;
 
-    if (authResponse.status < 400) {
-      next(req, res);
-    }
-    else {
-      res.status(authResponse.status).send(authResponse);
-    }
-  };
+  const authResponse = await authRequestor.request(method, path, urlApiKey, bodyApiKey, headerApiKey, headers, body);
+
+  if (authResponse?.status < 400) {
+    next();
+  } else {
+    res.status(authResponse.status || 401).send(authResponse);
+  }
 }
 
 module.exports = AuthMiddleware;

@@ -13,13 +13,6 @@ class ApiRequestor {
     this._baseUrl = constants.apiBaseUrl;
   }
 
-  request(method: string, path: string, params?: object, headers?: object) {
-    const url = this._buildUrl(path);
-    const requestHeaders = this._buildHeaders(headers);
-    const requestParams = this._buildParams(params);
-    return this._httpClient.makeRequest(method, url, requestParams, requestHeaders);
-  }
-
   _buildUrl(path: string) {
     return `${this._baseUrl}${path}`;
   }
@@ -29,12 +22,20 @@ class ApiRequestor {
       'Authorization': `Bearer ${this.secretKey}`,
       'X-Archetype-AppID': this.appId,
       'X-Archetype-SecretKey': this.secretKey,
+      'X-Archetype-LiveMode': `${this.secretKey.includes('_sk_prod_')}`,
     };
     return Object.assign(requestHeaders, headers);
   }
 
   _buildParams(params: object) {
     return params;
+  }
+
+  async request(method: string, path: string, params?: object, headers?: object) {
+    const url = this._buildUrl(path);
+    const requestHeaders = this._buildHeaders(headers);
+    const requestParams = this._buildParams(params);
+    return this._httpClient.makeRequest(method, url, requestParams, requestHeaders);
   }
 }
 

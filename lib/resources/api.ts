@@ -2,7 +2,7 @@
 const ApiRequestor = require('../ApiRequestor');
 
 class ApiResource {
-  private _requestor: any;
+  private _requestor: typeof ApiRequestor;
   private readonly _objectName: string;
   constructor(objectName: string, appId?: string, secretKey?: string) {
     this._requestor = new ApiRequestor(appId, secretKey);
@@ -19,7 +19,7 @@ class ApiResource {
     return this._requestor.request('GET', path);
   }
 
-  async all(version: number) {
+  async all(version: number = 1) {
     const path = `/api/v${version}/${this._objectName}s`;
     return this._requestor.request('GET', path);
   }

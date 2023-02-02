@@ -2,7 +2,7 @@ const {ApiResource} = require("./api");
 
 class Customer extends ApiResource {
   constructor(appId?: string, secretKey?: string) {
-    super("customer", appId, secretKey);
+    super("user", appId, secretKey);
   }
 
   async create(params: any, version?: number) {
