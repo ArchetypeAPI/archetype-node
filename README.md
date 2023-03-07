@@ -51,12 +51,14 @@ Node 12.x.x+
 The library needs to be configured with your account's **app_id** and **secret key** which is available in your **[Archetype Dashboard](app.archetype.dev/settings)**. Set `archetype.app_id` and `archetype.secret_key` to their values:
 
 ```js
-import archetypesdk from '@archetypeapi/node'
+const express = require("express");
+const router = express.Router();
+const { ArchetypeApi } = require("@archetypeapi/node");
 
 const appId = process.env.APP_ID; // find in your Archetype Dashboard
 const secretKey = process.env.SECRET_KEY; // find in your Archetype Dashboard
 
-const Archetype = archetypesdk(appId, secretKey);
+const Archetype = ArchetypeApi(appId, appSecret);
 
 // create customer
 
@@ -76,10 +78,10 @@ console.log(customer["email"]);
 
 // Track a Metered Usage
 
-Archetype.BillableMetric.LogUsage(
-  custom_ud="YOUR_CUSTOMER_ID",
-  billable_metric_id="BILLABLE_METRIC_ID",
-  amount=100 // Float
+Archetype.BillableMetric.logUsage(
+  "YOUR_CUSTOMER_ID",
+  "BILLABLE_METRIC_ID",
+  100 // amount (Float)
 )
 
 // Authorize an Express Request with Archetype Middelware
