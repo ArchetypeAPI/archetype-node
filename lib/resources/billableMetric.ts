@@ -21,7 +21,7 @@ class BillableMetric extends ApiResource {
     return super.update(billable_metric_id, version, params);
   }
 
-  async logUsage(customer_uid: string, billable_metric_id: string, used_amount: number, version?: number) {
+  async logUsage(customer_uid: string, billable_metric_id: string, used_amount: number, version: number = 4) {
     const path = `/sdk/v${version}/log-billable-metric-usage`;
     const data = {
       "custom_uid": customer_uid,
