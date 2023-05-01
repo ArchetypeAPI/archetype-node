@@ -1,4 +1,4 @@
-const { ApiResource } = require("./api");
+import ApiResource from "./api";
 
 class Product extends ApiResource {
   constructor(appId?: string, secretKey?: string) {
@@ -22,4 +22,4 @@ class Product extends ApiResource {
   }
 }
 
-module.exports = Product;
+export default Product;

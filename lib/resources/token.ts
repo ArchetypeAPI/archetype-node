@@ -1,4 +1,4 @@
-const { ApiResource } = require("./api");
+import ApiResource from "./api";
 
 class Token extends ApiResource {
   constructor(appId?: string, secretKey?: string) {
@@ -14,8 +14,8 @@ class Token extends ApiResource {
     const data = {
       custom_uid: customer_uid,
     };
-    return this._requestor.request("POST", path, data);
+    return this.postRequest(path, data);
   }
 }
 
-module.exports = Token;
+export default Token;

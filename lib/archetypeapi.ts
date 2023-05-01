@@ -1,44 +1,41 @@
-const Customer = require("./resources/customer");
-const Product = require("./resources/product");
-const Token = require("./resources/token");
-const BillableMetric = require("./resources/billableMetric");
-const Auth = require("./resources/auth");
-const Endpoint = require("./resources/endpoint");
-
+import CustomerService from "./resources/customer";
+import ProductService from "./resources/product";
+import TokenService from "./resources/token";
+import BillableMetricService from "./resources/billableMetric";
+// import Auth from "./resources/auth";
+import EndpointService from "./resources/endpoint";
 
 class Archetype {
-  public Customer: typeof Customer;
-  public Product: typeof Product;
-  public Token: typeof Token;
-  public BillableMetric: typeof BillableMetric;
-  public Endpoint: typeof Endpoint;
+  public Customer: CustomerService;
+  public Product: ProductService;
+  public Token: TokenService;
+  public BillableMetric: BillableMetricService;
+  public Endpoint: EndpointService;
   constructor(appId: string, secretKey: string) {
-    this.Customer = new Customer(appId, secretKey)
-    this.Product = new Product(appId, secretKey)
-    this.Token = new Token(appId, secretKey)
-    this.BillableMetric = new BillableMetric(appId, secretKey)
-    this.Endpoint = new Endpoint(appId, secretKey)
+    this.Customer = new CustomerService(appId, secretKey);
+    this.Product = new ProductService(appId, secretKey);
+    this.Token = new TokenService(appId, secretKey);
+    this.BillableMetric = new BillableMetricService(appId, secretKey);
+    this.Endpoint = new EndpointService(appId, secretKey);
   }
 }
 
 function ArchetypeApi(appId: string, secretKey: string) {
-  return new Archetype(appId, secretKey)
+  return new Archetype(appId, secretKey);
 }
 
 function sayHello() {
-  console.log('Hello Archetype!')
+  console.log("Hello Archetype!");
 }
 
 function requestTime(req, res, next) {
   req.requestTime = new Date().toLocaleString();
-  next()
+  next();
 }
 
-module.exports = ArchetypeApi;
+// module.exports.ArchetypeApi = ArchetypeApi;
+// module.exports.sayHello = sayHello;
+// module.exports.Auth = Auth;
+// module.exports.requestTime = requestTime;
 
-module.exports.ArchetypeApi = ArchetypeApi;
-module.exports.sayHello = sayHello;
-module.exports.Auth = Auth;
-module.exports.requestTime = requestTime;
-
-module.exports.default = ArchetypeApi;
+export default ArchetypeApi;

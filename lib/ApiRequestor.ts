@@ -1,5 +1,5 @@
-const constants =  require("./constants");
-const HttpClient = require("./HttpClient");
+import constants from "./constants";
+import HttpClient from "./HttpClient";
 
 class ApiRequestor {
   private readonly appId: string;
@@ -7,8 +7,8 @@ class ApiRequestor {
   private _httpClient: any;
   private readonly _baseUrl: string;
   constructor(appId?: string, secretKey?: string) {
-    this.appId = appId || constants.appId;
-    this.secretKey = secretKey || constants.secretKey;
+    this.appId = appId || constants.appId || "";
+    this.secretKey = secretKey || constants.secretKey || "";
     this._httpClient = new HttpClient();
     this._baseUrl = constants.apiBaseUrl;
   }
@@ -19,10 +19,10 @@ class ApiRequestor {
 
   _buildHeaders(headers: object) {
     const requestHeaders = {
-      'Authorization': `Bearer ${this.secretKey}`,
-      'X-Archetype-AppID': this.appId,
-      'X-Archetype-SecretKey': this.secretKey,
-      'X-Archetype-LiveMode': `${this.secretKey.includes('_sk_prod_')}`,
+      Authorization: `Bearer ${this.secretKey}`,
+      "X-Archetype-AppID": this.appId,
+      "X-Archetype-SecretKey": this.secretKey,
+      "X-Archetype-LiveMode": `${this.secretKey.includes("_sk_prod_")}`,
     };
     return Object.assign(requestHeaders, headers);
   }
@@ -31,13 +31,22 @@ class ApiRequestor {
     return params;
   }
 
-  async request(method: string, path: string, params?: object, headers?: object) {
+  async request(
+    method: string,
+    path: string,
+    params?: object,
+    headers?: object
+  ) {
     const url = this._buildUrl(path);
-    const requestHeaders = this._buildHeaders(headers);
-    const requestParams = this._buildParams(params);
-    return this._httpClient.makeRequest(method, url, requestParams, requestHeaders);
+    const requestHeaders = this._buildHeaders(headers || {});
+    const requestParams = this._buildParams(params || {});
+    return this._httpClient.makeRequest(
+      method,
+      url,
+      requestParams,
+      requestHeaders
+    );
   }
 }
 
-module.exports = ApiRequestor
-
+export default ApiRequestor;

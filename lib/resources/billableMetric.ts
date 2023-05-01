@@ -1,4 +1,4 @@
-const { ApiResource } = require("./api");
+import ApiResource from "./api";
 
 class BillableMetric extends ApiResource {
   constructor(appId?: string, secretKey?: string) {
@@ -21,15 +21,20 @@ class BillableMetric extends ApiResource {
     return super.update(billable_metric_id, version, params);
   }
 
-  async logUsage(customer_uid: string, billable_metric_id: string, used_amount: number, version: number = 4) {
+  async logUsage(
+    customer_uid: string,
+    billable_metric_id: string,
+    used_amount: number,
+    version: number = 4
+  ) {
     const path = `/sdk/v${version}/log-billable-metric-usage`;
     const data = {
-      "custom_uid": customer_uid,
-      "billable_metric_id": billable_metric_id,
-      "used_amount": used_amount
-    }
-    return this._requestor.request('POST', path, data);
+      custom_uid: customer_uid,
+      billable_metric_id: billable_metric_id,
+      used_amount: used_amount,
+    };
+    return this.postRequest(path, data);
   }
 }
 
-module.exports = BillableMetric;
+export default BillableMetric;

@@ -1,5 +1,51 @@
 # @archetypeapi/node
 
+## 2.0.4
+
+### Patch Changes
+
+- removed cjs
+
+## 2.0.3
+
+### Patch Changes
+
+- added util to external
+
+## 2.0.2
+
+### Patch Changes
+
+- changed node version requirement
+
+## 2.0.1
+
+### Patch Changes
+
+- nothing
+
+## 2.0.0
+
+### Major Changes
+
+- Redid imports for node sdk
+
+## 1.1.1
+
+### Patch Changes
+
+- fix to package.json added module type
+
+## 1.1.0
+
+### Minor Changes
+
+- Added customer portal token generation to sdk
+
+### Patch Changes
+
+- 3bc841a: Update Billable Metric & Readme
+
 ## 1.0.12
 
 ### Patch Changes

@@ -1,12 +1,13 @@
-import type { Options } from 'tsup'
+import type { Options } from "tsup";
 
 const config: Options = {
-  entry: ['lib/archetypeapi.ts'],
+  entry: ["lib/archetypeapi.ts"],
   dts: true,
-  format: ['iife', 'cjs', 'esm'],
+  format: ["iife", "esm"],
   minify: true,
   clean: true,
-  platform: 'node',
-}
+  platform: "node",
+  external: ["util"],
+};
 
-export default config
+export default config;

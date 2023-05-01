@@ -1,6 +1,5 @@
-
-const constants = require('./constants');
-const HttpClient = require('./HttpClient');
+import constants from "./constants";
+import HttpClient from "./HttpClient";
 
 class AuthRequestor {
   private readonly appId: string;
@@ -8,8 +7,8 @@ class AuthRequestor {
   private _httpClient: any;
   private _baseUrl: string;
   constructor(appId?: string, secretKey?: string) {
-    this.appId = appId || constants.appId;
-    this.secretKey = secretKey || constants.secretKey;
+    this.appId = appId || constants.appId || "";
+    this.secretKey = secretKey || constants.secretKey || "";
     this._httpClient = new HttpClient();
     this._baseUrl = constants.apiBaseUrl;
   }
@@ -22,38 +21,31 @@ class AuthRequestor {
     headerApiKey,
     requestHeaders,
     params,
-    intent,
+    intent?
   ) {
-
     const headers = {
-      'X-Archetype-AppID': this.appId,
-      'X-Archetype-SecretKey': this.secretKey,
+      "X-Archetype-AppID": this.appId,
+      "X-Archetype-SecretKey": this.secretKey,
     };
 
     const data = {
       path,
       method,
-      "body": params,
-      "url_apikey": urlApiKey,
-      "body_apikey": bodyApiKey,
-      "header_apikey": headerApiKey,
-    }
+      body: params,
+      url_apikey: urlApiKey,
+      body_apikey: bodyApiKey,
+      header_apikey: headerApiKey,
+    };
 
     const url = `${constants.apiBaseUrl}/sdk/v${constants.authVersion}/authorize`;
-    console.log('Posting to url: ', url)
+    console.log("Posting to url: ", url);
 
     try {
-      return await this._httpClient.makeRequest(
-        'POST',
-        url,
-        data,
-        headers
-      );
+      return await this._httpClient.makeRequest("POST", url, data, headers);
     } catch (error) {
       return error;
     }
-
   }
 }
 
-module.exports = AuthRequestor;
+export default AuthRequestor;
