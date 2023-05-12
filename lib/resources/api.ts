@@ -1,40 +1,101 @@
 
-const ApiRequestor = require('../ApiRequestor');
+import { AxiosInstance } from 'axios';
+import workerpool from 'workerpool';
+import path from 'path';
+
 
 class ApiResource {
-  private _requestor: typeof ApiRequestor;
-  private readonly _objectName: string;
-  constructor(objectName: string, appId?: string, secretKey?: string) {
-    this._requestor = new ApiRequestor(appId, secretKey);
-    this._objectName = objectName;
+  private apiClient: AxiosInstance;
+  private pool: workerpool.WorkerPool;
+  private _objectName: string;
+  private secretKey: string;
+  
+  constructor(secretKey: string) {
+    this.secretKey = secretKey;
+    this.pool = workerpool.pool(path.join("./lib/resources/", '..', '..', 'apiWorker.js'));
   }
 
-  async create(version: number = 1, params: any) {
-    const path = `/api/v${version}/create-${this._objectName}`
-    return this._requestor.request('POST', path, params);
+  public async create(version: number = 1, params: any): Promise<any> {
+    const config = {
+      url: `${this.apiClient.defaults.baseURL}/api/v${version}/create-${this._objectName}`,
+      method: 'post',
+      headers: this.apiClient.defaults.headers,
+      params,
+    };
+
+    try {
+      const result = await this.pool.exec('sendRequest', [this.secretKey, config]);
+      return result;
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      throw error;
+    }
   }
 
-  async retrieve(id: string, version: number = 1) {
-    const path = `/api/v${version}/${this._objectName}/${id}`;
-    return this._requestor.request('GET', path);
+  public async retrieve(id: string, version: number = 1): Promise<any> {
+    const config = {
+      url: `${this.apiClient.defaults.baseURL}/api/v${version}/${this._objectName}/${id}`,
+      method: 'get',
+      headers: this.apiClient.defaults.headers,
+    };
+
+    try {
+      const result = await this.pool.exec('sendRequest', [this.secretKey, config]);
+      return result;
+    } catch (error) {
+      console.error('Error retrieving products:', error);
+      throw error;
+    }
   }
 
-  async all(version: number = 1) {
-    const path = `/api/v${version}/${this._objectName}s`;
-    return this._requestor.request('GET', path);
+  public async update(id: string, version: number = 1, params: any): Promise<any> {
+    const config = {
+      url: `${this.apiClient.defaults.baseURL}/api/v${version}/create-${this._objectName}`,
+      method: 'put',
+      headers: this.apiClient.defaults.headers,
+      params,
+    };
+
+    try {
+      const result = await this.pool.exec('sendRequest', [this.secretKey, config]);
+      return result;
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      throw error;
+    }
   }
 
-  async update(id: string, version: number = 1, params: any) {
-    const path = `/api/v${version}/${this._objectName}/${id}`;
-    return this._requestor.request('PUT', path, params);
+  public async delete(id: string, version: number = 1): Promise<any> {
+    const config = {
+      url: `${this.apiClient.defaults.baseURL}/api/v${version}/${this._objectName}/${id}`,
+      method: 'delete',
+      headers: this.apiClient.defaults.headers,
+    };
+
+    try {
+      const result = await this.pool.exec('sendRequest', [this.secretKey, config]);
+      return result;
+    } catch (error) {
+      console.error('Error deleting products:', error);
+      throw error;
+    }
   }
 
-  async delete(id: string, version: number = 1, params: any) {
-    const path = `/api/v${version}/${this._objectName}/${id}`;
-    return this._requestor.request('DELETE', path, params);
+  public async list(version: number = 1): Promise<any> {
+    const config = {
+      url: `${this.apiClient.defaults.baseURL}/api/v${version}/${this._objectName}`,
+      method: 'get',
+      headers: this.apiClient.defaults.headers,
+    };
+
+    try {
+      const result = await this.pool.exec('sendRequest', [this.secretKey, config]);
+      return result;
+    } catch (error) {
+      console.error('Error retrieving products:', error);
+      throw error;
+    }
   }
 }
 
-module.exports = {
-  ApiResource,
-}
+export { ApiResource };

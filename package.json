@@ -1,56 +1,7 @@
 {
-  "name": "@archetypeapi/node",
-  "version": "1.0.12",
-  "description": "Archetype API Node",
-  "keywords": [
-    "archetype",
-    "api subscription",
-    "api billing",
-    "api"
-  ],
-  "author": "Archetype <hello@archetype.dev> (https://archetype.dev/)",
-  "homepage": "https://github.com/ArchetypeAPI/archetype-node",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/ArchetypeAPI/archetype-node.git"
-  },
-  "bugs": "https://github.com/ArchetypeAPI/archetype-node/issues",
-  "engines": {
-    "node": ">=12.*"
-  },
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
-  "exports": [
-    {
-      "default": "./dist/index.js",
-      "require": "./dist/index.js",
-      "import": "./dist/index.mjs",
-      "node": "./dist/index.js"
-    }
-  ],
-  "scripts": {
-    "build": "tsup --entry.index lib/archetypeapi.ts",
-    "build:watch": "tsup --watch --entry.index lib/archetypeapi.ts",
-    "start": "npm run build -- --watch",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "clean": "rm -rf node_modules && rm -rf dist",
-    "release": "yarn build && changeset && changeset version && changeset publish"
-  },
-  "devDependencies": {
-    "@changesets/cli": "^2.26.0",
-    "axios": "^1.3.1",
-    "tsup": "^6.5.0",
-    "typescript": "^4.9.5"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
   "dependencies": {
-    "@types/node": "^18.11.18"
+    "axios": "^1.4.0",
+    "path": "^0.12.7",
+    "workerpool": "^6.4.0"
   }
 }
