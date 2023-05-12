@@ -1,7 +1,8 @@
 import axios, { AxiosRequestConfig } from 'axios';
 
-async function sendRequest(secretKey: string, config: AxiosRequestConfig): Promise<any> {
+async function sendRequest(baseURL: string, secretKey: string, config: AxiosRequestConfig): Promise<any> {
   const apiClient = axios.create({
+    baseURL: baseURL,
     headers: {
       'Authorization': `Bearer ${secretKey}`,
     },

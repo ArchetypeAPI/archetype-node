@@ -1,101 +1,115 @@
-
-import { AxiosInstance } from 'axios';
-import workerpool from 'workerpool';
 import path from 'path';
+import { RequestQueue } from '../../RequestQueue';
 
 
-class ApiResource {
-  private apiClient: AxiosInstance;
-  private pool: workerpool.WorkerPool;
-  private _objectName: string;
+export class ApiResource {
   private secretKey: string;
-  
-  constructor(secretKey: string) {
+  private requestQueue: RequestQueue;
+
+  constructor(baseURL: string, secretKey: string) {
     this.secretKey = secretKey;
-    this.pool = workerpool.pool(path.join("./lib/resources/", '..', '..', 'apiWorker.js'));
+    this.requestQueue = new RequestQueue(baseURL, path.join('./lib/resources/', '..', '..', 'apiWorker.js'));
   }
 
   public async create(version: number = 1, params: any): Promise<any> {
     const config = {
-      url: `${this.apiClient.defaults.baseURL}/api/v${version}/create-${this._objectName}`,
-      method: 'post',
-      headers: this.apiClient.defaults.headers,
-      params,
+      functionName: 'sendRequest',
+      functionArgs: [
+        this.secretKey,
+        {
+          url: `/api/v${version}/create-product`,
+          method: 'post',
+          params: params,
+        },
+      ],
     };
 
     try {
-      const result = await this.pool.exec('sendRequest', [this.secretKey, config]);
-      return result;
+      return this.requestQueue.execute(config);
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error('Error creating products:', error);
       throw error;
     }
   }
 
   public async retrieve(id: string, version: number = 1): Promise<any> {
     const config = {
-      url: `${this.apiClient.defaults.baseURL}/api/v${version}/${this._objectName}/${id}`,
-      method: 'get',
-      headers: this.apiClient.defaults.headers,
+      functionName: 'sendRequest',
+      functionArgs: [
+        this.secretKey,
+        {
+          url: `/api/v${version}/product/${id}`,
+          method: 'get',
+        },
+      ],
     };
 
     try {
-      const result = await this.pool.exec('sendRequest', [this.secretKey, config]);
-      return result;
+      return this.requestQueue.execute(config);
     } catch (error) {
-      console.error('Error retrieving products:', error);
+      console.error('Error retrieving product:', error);
       throw error;
     }
   }
 
   public async update(id: string, version: number = 1, params: any): Promise<any> {
     const config = {
-      url: `${this.apiClient.defaults.baseURL}/api/v${version}/create-${this._objectName}`,
-      method: 'put',
-      headers: this.apiClient.defaults.headers,
-      params,
+      functionName: 'sendRequest',
+      functionArgs: [
+        this.secretKey,
+        {
+          url: `/api/v${version}/product/${id}`,
+          method: 'put',
+          params,
+        },
+      ],
     };
 
     try {
-      const result = await this.pool.exec('sendRequest', [this.secretKey, config]);
-      return result;
+      return this.requestQueue.execute(config);
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error('Error modifying product:', error);
       throw error;
     }
   }
 
   public async delete(id: string, version: number = 1): Promise<any> {
     const config = {
-      url: `${this.apiClient.defaults.baseURL}/api/v${version}/${this._objectName}/${id}`,
-      method: 'delete',
-      headers: this.apiClient.defaults.headers,
+      functionName: 'sendRequest',
+      functionArgs: [
+        this.secretKey,
+        {
+          url: `/api/v${version}/product/${id}`,
+          method: 'delete',
+        },
+      ],
     };
 
     try {
-      const result = await this.pool.exec('sendRequest', [this.secretKey, config]);
-      return result;
+      return this.requestQueue.execute(config);
     } catch (error) {
-      console.error('Error deleting products:', error);
+      console.error('Error deleting product:', error);
       throw error;
     }
   }
 
   public async list(version: number = 1): Promise<any> {
     const config = {
-      url: `${this.apiClient.defaults.baseURL}/api/v${version}/${this._objectName}`,
-      method: 'get',
-      headers: this.apiClient.defaults.headers,
+      functionName: 'sendRequest',
+      functionArgs: [
+        this.secretKey,
+        {
+          url: `/api/v${version}/products`,
+          method: 'get',
+        },
+      ],
     };
 
     try {
-      const result = await this.pool.exec('sendRequest', [this.secretKey, config]);
-      return result;
+      return this.requestQueue.execute(config);
     } catch (error) {
-      console.error('Error retrieving products:', error);
+      console.error('Error retrieving all products:', error);
       throw error;
     }
   }
 }
-
-export { ApiResource };
