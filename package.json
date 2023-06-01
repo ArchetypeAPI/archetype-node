@@ -1,6 +1,6 @@
 {
   "name": "archetype-node-v2",
-  "version": "1.0.59",
+  "version": "1.0.60",
   "description": "Your Node.js SDK",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
