@@ -3,6 +3,7 @@ import { Customer } from "./resources/customer";
 import { Endpoint } from "./resources/endpoint";
 import { Product } from "./resources/product";
 import { Token } from "./resources/token";
+
 //import { RetrievableAPIResource } from "./resources/resource";
 class ArchetypeAPI {
     private static instance: ArchetypeAPI;
@@ -47,8 +48,10 @@ class ArchetypeAPI {
   
   }
   
-export function Archetype(appId: string, secretKey: string) {
+function Archetype(appId: string, secretKey: string) {
     
     return new ArchetypeAPI(appId, secretKey);
 }
+
+export { Archetype};
   

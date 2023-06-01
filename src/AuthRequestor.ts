@@ -40,7 +40,6 @@ class AuthRequestor {
     }
 
     const url = `${constants.apiBaseUrl}/sdk/v${constants.authVersion}/authorize`;
-    console.log('Posting to url: ', url)
 
     try {
       return await this._httpClient.makeRequest(

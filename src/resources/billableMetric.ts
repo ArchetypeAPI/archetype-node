@@ -14,5 +14,4 @@ export class BillableMetric extends ApiResource {
         }
         return this._requestor.request('POST', path, data);
       }
-    
 }

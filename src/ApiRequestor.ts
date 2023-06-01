@@ -36,7 +36,6 @@ class ApiRequestor {
   async request(method: Method, path: string, params?: object, body?: object, headers?: object, ) {
     const url = this._buildUrl(path);
     const requestHeaders = this._buildHeaders();
-    console.log(requestHeaders);
     try {
         const response = await axios.request({
           url: `${url}`,
@@ -45,7 +44,6 @@ class ApiRequestor {
           data: body,
           params
         });
-        console.log("response")
         return response;
       } catch (error) {
         console.log(error);

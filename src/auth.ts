@@ -22,4 +22,4 @@ const AuthMiddleware = (appId: string, secretKey: string, baseUrl: string) => as
   }
 }
 
-export {AuthMiddleware};
+export { AuthMiddleware };
