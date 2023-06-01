@@ -60,34 +60,84 @@ const secretKey = process.env.SECRET_KEY; // find in your Archetype Dashboard
 
 const Archetype = ArchetypeApi(appId, appSecret);
 
+
+// BASIC FUNCTIONS
+// There are base functions (retrieve, all, create (new for customer), update, delete) that can be used 
+// for all main objects (billableMetric, customer, endpoint, product).
+// An example of each using product is below 
+
+// retrieve specific product
+const product = Archetype.product.retrieve(id: string, version: number = 1);
+
+// log that product's id
+console.log(product["product_id"]);
+
+// list products
+const products = Archetype.product.all(version: number = 1);
+
+// log the first product's id
+console.log(products[0]["product_id"]);
+
+// create product
+const product = Archetype.product.create(params: any, version: number = 1, );
+
+// update product
+const newProduct = Archetype.product.update(id: string, body: any = {}, version: number = 1, params: any);
+
+// delete product
+const deletedProduct = Archetype.product.delete(id: string, version: number = 1, params: any)
+
 // create customer
+const customer = Archetype.customer.new(customUid: string, email: string, name: string);
 
-const customer = Archetype.Customer.create("CUSTOM_UID");
+// OTHER AVAILABLE FUNCTIONS
 
-// list customers
-const customers = Archetype.Customer.all()
+// create checkout session
+const checkoutSession = Archetype.customer.CreateCheckoutSession(customUid: string, productId: string, version: number);
 
-// log the first customer's email
-console.log(customers[0]["email"]);
+// reset api key
+const key = Archetype.customer.ResetAPIKey(customUid: string, apikey: string, version: number);
 
-// retrieve specific Customer
-const customer = Archetype.Customer.retrieve("CUSTOM_UID");
+// create sandbox subscription
+const subscription = CreateSandboxSubscription(customUid: string, productId: string, sandboxDuration: string, version: number);
 
-// log that customer's email
-console.log(customer["email"]);
+// cancel subscription
+const canceledSub = CancelSubscription(customUid: string, version: number = 1, params: any = {});
+
+// create checkout session
+const checkoutSession = archetype.customer.CreateCheckoutSession("CUSTOM_UID", "PRODUCT_ID");
+
+// update customer
+const updatedCustomer = archetype.customer.update("CUSTOM_UID", params); // example params: {email: "asdf@archetype.dev"}
+
+// list billable metrics
+const billableMetrics = archetype.billableMetric.all();
+
+// retrieve billable metric
+const billableMetric = archetype.billableMetric.retrieve("BILLABLE_METRIC_ID");
+
+// create billable metric
+const billableMetric = archetype.billableMetric.create({
+                          name: "Storage",
+                          description: "test",
+                          unit: "GB",
+                          aggregation_type: "SUM"
+                        });
 
 // Track a Metered Usage
-
-Archetype.BillableMetric.logUsage(
+Archetype.billableMetric.logUsage(
   "YOUR_CUSTOMER_ID",
   "BILLABLE_METRIC_ID",
   100 // amount (Float)
-)
+);
+
+// get user token
+const token = archetype.token.get("CUSTOM_UID");
 
 // Authorize an Express Request with Archetype Middelware
-const express = require('express')
-const { Auth } = require('@archetypeapi/node')
-const app = express()
+const express = require('express');
+const { Auth } = require('@archetypeapi/node');
+const app = express();
 
 const appId = process.env.APP_ID; // find in your Archetype Dashboard
 const secretKey = process.env.SECRET_KEY; // find in your Archetype Dashboard
@@ -96,7 +146,7 @@ const ArchetypeAuth = Auth(appId, appSecret);
 
 app.get('/a', ArchetypeAuth, (req, res) => {
   res.send('Success!')
-})
+});
 ```
 
 You can leverage the SDK to create and configure billable metrics, products, token management, authorization and more. Check out [the docs](https://docs.archetype.dev/docs/welcome) for more examples and use cases.
