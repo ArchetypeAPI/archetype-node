@@ -5,15 +5,18 @@ export class Token extends ApiResource {
         super("token", appId, secretKey, baseUrl);
       }
     
+      /*
       async create(params: any, version?: number) {
         return super.create(version, params);
       }
-    
-      async getCustomerPortalsToken(customUid: string) {
+      */
+
+      async get(customUid: string, version: number = 1) {
         const path = `/customer-portal/tokens/v1/create`;
         const data = {
           custom_uid: customUid,
         };
-        return this._requestor.request("POST", path, data);
-      }
+        return this._requestor.request('POST', path, data);
+    }
+
 }

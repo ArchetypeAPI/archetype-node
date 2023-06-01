@@ -11,18 +11,34 @@ export class Customer extends ApiResource {
         super("user", appId, secretKey, baseUrl);
     }
 
+    async new(customUid: string, email: string, name: string): Promise<any> {
+      const params = {
+        custom_uid: customUid,
+        email: email,
+        name: name
+      };
+  
+      return super.create(params, 2);
+    }
+
     async CreateCheckoutSession(customUid: string, productId: string, version: number = 1) {
         const path = `/api/v${version}/${this._objectName}/${customUid}/payment-link/${productId}`;
         return this._requestor.request('POST', path, {});
     }
 
-    async ResetAPIKey(customUid: string, version: number = 1, params: any = {}) {
+    async ResetAPIKey(customUid: string, apikey: string, version: number = 2, ) {
         const path = `/api/v${version}/${this._objectName}/${customUid}/reset-api-key`;
+        const params = {
+          apikey: apikey
+        }
         return this._requestor.request('POST', path, params);
       }
     
-      async CreateSandboxSubscription(customUid: string, productId: string, version: number = 1, params: any = {}) {
+      async CreateSandboxSubscription(customUid: string, productId: string, sandboxDuration: string, version: number = 1, ) {
         const path = `/api/v${version}/${this._objectName}/${customUid}/create-promo/${productId}`;
+        const params = {
+          duration: sandboxDuration
+        }
         return this._requestor.request('POST', path, params);
       }
     
