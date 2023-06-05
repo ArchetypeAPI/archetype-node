@@ -1,5 +1,6 @@
 // create an HttpClient class using axios
-const axios = require('axios');
+// const axios = require('axios');
+import axios from 'axios';
 
 class HttpClient {
     private _client: any;
