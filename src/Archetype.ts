@@ -5,8 +5,8 @@ import { Product } from "./resources/product";
 import { Token } from "./resources/token";
 
 //import { RetrievableAPIResource } from "./resources/resource";
-class ArchetypeAPI {
-    private static instance: ArchetypeAPI;
+class Archetype {
+    private static instance: Archetype;
     private appId: string;
     private secretKey: string;
     private baseUrl = "https://api.archetype.dev";
@@ -28,14 +28,14 @@ class ArchetypeAPI {
       this.customer = new Customer(appId, secretKey, this.baseUrl)
     }
 
-    public static getArchetypeInstance(appId?: string, secretKey?: string): ArchetypeAPI {
-        if (!ArchetypeAPI.instance) {
+    public static getArchetypeInstance(appId?: string, secretKey?: string): Archetype {
+        if (!Archetype.instance) {
             if (!appId || !secretKey) {
                 throw new Error('App ID and Secret Key must be provided');
               }
-            ArchetypeAPI.instance = new ArchetypeAPI(appId, secretKey);
+            Archetype.instance = new Archetype(appId, secretKey);
         }
-        return ArchetypeAPI.instance;
+        return Archetype.instance;
       }
     
       public getAppId(): string {
@@ -47,11 +47,7 @@ class ArchetypeAPI {
       }
   
   }
-  
-function Archetype(appId: string, secretKey: string) {
-    
-    return new ArchetypeAPI(appId, secretKey);
-}
 
-export { Archetype};
+
+export { Archetype };
   
