@@ -48,17 +48,47 @@ Node 12.x.x+
 # Usage
 
 
-The library needs to be configured with your account's **app_id** and **secret key** which is available in your **[Archetype Dashboard](app.archetype.dev/settings)**. Set `archetype.app_id` and `archetype.secret_key` to their values:
+The library needs to be configured with your account's `app_id` and `secret_key` which are available in your **[Archetype Dashboard](app.archetype.dev/settings)**. 
+
+You can set them up through your environment variables as shown below:
+
+```sh
+export ARCHETYPE_APP_ID=your_app_id
+export ARCHETYPE_SECRET_KEY=your_secret_key
+```
+
+When you're ready to start using the SDK, initialize it as shown below:
+
+```js
+const { Archetype } = require("@archetypeapi/node");
+
+const ArchetypeSDK = new Archetype();
+```
+
+OR
+
+You can also initialize the SDK with your `app_id` and `secret_key` directly:
+
+```js
+const { Archetype } = require("@archetypeapi/node");
+
+const appId = 'your_app_id'; // find in your Archetype Dashboard
+const appSecret = 'your_secret_key'; // find in your Archetype Dashboard
+
+const ArchetypeSDK = new Archetype(appId, appSecret);
+```
+
+The SDK can be used to create and configure billable metrics, products, token management, authorization and more. Check out [the docs](https://docs.archetype.dev/docs/welcome) for more examples and use cases.
 
 ```js
 const express = require("express");
 const router = express.Router();
-const { ArchetypeApi } = require("@archetypeapi/node");
+const ArchetypeApi = require("@archetypeapi/node");
 
-const appId = process.env.APP_ID; // find in your Archetype Dashboard
-const secretKey = process.env.SECRET_KEY; // find in your Archetype Dashboard
+const appId = process.env.ARCHETYPE_APP_ID; // find in your Archetype Dashboard
+const secretKey = process.env.ARCHETYPE_SECRET_KEY; // find in your Archetype Dashboard
 
-const Archetype = ArchetypeApi(appId, appSecret);
+const Archetype = new ArchetypeApi.Archetype(appId, appSecret);
 
 
 // BASIC FUNCTIONS
@@ -99,25 +129,25 @@ const checkoutSession = Archetype.customer.CreateCheckoutSession(customUid: stri
 const key = Archetype.customer.ResetAPIKey(customUid: string, apikey: string, version: number);
 
 // create sandbox subscription
-const subscription = CreateSandboxSubscription(customUid: string, productId: string, sandboxDuration: string, version: number);
+const subscription = Archetype.customer.CreateSandboxSubscription(customUid: string, productId: string, sandboxDuration: string, version: number);
 
 // cancel subscription
-const canceledSub = CancelSubscription(customUid: string, version: number = 1, params: any = {});
+const canceledSub = Archetype.customer.CancelSubscription(customUid: string, version: number = 1, params: any = {});
 
 // create checkout session
-const checkoutSession = archetype.customer.CreateCheckoutSession("CUSTOM_UID", "PRODUCT_ID");
+const checkoutSession = Archetype.customer.CreateCheckoutSession("CUSTOM_UID", "PRODUCT_ID");
 
 // update customer
-const updatedCustomer = archetype.customer.update("CUSTOM_UID", params); // example params: {email: "asdf@archetype.dev"}
+const updatedCustomer = Archetype.customer.update("CUSTOM_UID", params); // example params: {email: "asdf@archetype.dev"}
 
 // list billable metrics
-const billableMetrics = archetype.billableMetric.all();
+const billableMetrics = Archetype.billableMetric.all();
 
 // retrieve billable metric
-const billableMetric = archetype.billableMetric.retrieve("BILLABLE_METRIC_ID");
+const billableMetric = Archetype.billableMetric.retrieve("BILLABLE_METRIC_ID");
 
 // create billable metric
-const billableMetric = archetype.billableMetric.create({
+const billableMetric = Archetype.billableMetric.create({
                           name: "Storage",
                           description: "test",
                           unit: "GB",
@@ -132,17 +162,24 @@ Archetype.billableMetric.logUsage(
 );
 
 // get user token
-const token = archetype.token.get("CUSTOM_UID");
+const token = Archetype.token.get("CUSTOM_UID");
 
+```
+
+# Middleware
+
+The SDK can also be used as middleware in Express applications to authorize requests. 
+
+```js
 // Authorize an Express Request with Archetype Middelware
 const express = require('express');
-const { Auth } = require('@archetypeapi/node');
+const { AuthMiddleware } = require('@archetypeapi/node');
 const app = express();
 
-const appId = process.env.APP_ID; // find in your Archetype Dashboard
-const secretKey = process.env.SECRET_KEY; // find in your Archetype Dashboard
+const appId = process.env.ARCHETYPE_APP_ID; // find in your Archetype Dashboard
+const secretKey = process.env.ARCHETYPE_SECRET_KEY; // find in your Archetype Dashboard
 
-const ArchetypeAuth = Auth(appId, appSecret);
+const ArchetypeAuth = AuthMiddleware(appId, appSecret);
 
 app.get('/a', ArchetypeAuth, (req, res) => {
   res.send('Success!')

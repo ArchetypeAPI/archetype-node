@@ -1,7 +1,6 @@
+import {Method} from "./utils";
+import axios from 'axios';
 
-
-import { Method } from "./utils";
-import axios, { AxiosResponse } from 'axios';
 const constants =  require("./constants");
 const HttpClient = require("./HttpClient");
 
@@ -65,11 +64,11 @@ class ApiRequestorV2 {
   private readonly secretKey: string;
   private _httpClient: any;
   private readonly _baseUrl: string;
-  constructor(appId?: string, secretKey?: string) {
+  constructor(appId?: string, secretKey?: string, baseUrl?: string) {
     this.appId = appId || constants.appId;
     this.secretKey = secretKey || constants.secretKey;
     this._httpClient = new HttpClient();
-    this._baseUrl = constants.apiBaseUrl;
+    this._baseUrl = baseUrl || constants.apiBaseUrl;
   }
 
   _buildUrl(path: string) {
@@ -77,13 +76,12 @@ class ApiRequestorV2 {
   }
 
   _buildHeaders() {
-    const requestHeaders = {
+    return {
       'Authorization': `Bearer ${this.secretKey}`,
       'X-Archetype-AppID': this.appId,
       'X-Archetype-SecretKey': this.secretKey,
       'X-Archetype-LiveMode': `${this.secretKey.includes('_sk_prod_')}`,
     };
-    return requestHeaders;
   }
 
   _buildParams(params: object) {
@@ -93,8 +91,7 @@ class ApiRequestorV2 {
   async request(method: string, path: string, body?: object, params?: object, headers?: object) {
     const url = this._buildUrl(path);
     const requestHeaders = this._buildHeaders();
-    const requestParams = params;
-    return this._httpClient.makeRequest(method, url, body, requestParams, requestHeaders);
+    return this._httpClient.makeRequest(method, url, body, params, requestHeaders);
   }
 }
 
